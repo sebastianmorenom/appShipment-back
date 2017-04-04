@@ -1,10 +1,22 @@
 /*
 CREATE USER AS_ADMIN IDENTIFIED BY oracle12c;
 GRANT ALL PRIVILEGES TO AS_ADMIN;
-*/ 
+*/
 
-CREATE TABLE persona (
-  id_persona GENERATED ALWAYS AS IDENTITY (START WITH 1001 INCREMENT BY 1) PRIMARY KEY,
+/* DROPS!*/
+
+DROP TABLE transp_vehiculos;
+DROP TABLE vehiculos;
+DROP TABLE tipos_vehiculo;
+DROP TABLE usuarios;
+DROP TABLE transportadores;
+DROP TABLE servicios;
+DROP TABLE localizaciones;
+DROP TABLE personas;
+
+
+CREATE TABLE personas (
+  id_persona NUMERIC GENERATED ALWAYS AS IDENTITY (START WITH 1001 INCREMENT BY 1) PRIMARY KEY,
   tipo_id VARCHAR2(2),
   nm_id NUMERIC,
   nm_celular NUMERIC,
@@ -14,9 +26,70 @@ CREATE TABLE persona (
   password VARCHAR2(50),
   fecha_registro DATE,
   calificacion NUMERIC(3,2),
-  activo BOOLEAN DEFAULT false
+  activo VARCHAR2(1) DEFAULT 'N' CHECK (activo IN('S', 'N'))
 );
 
-CREATE TABLE localizacion (
+CREATE TABLE usuarios (
+  id_usuario NUMERIC NOT NULL,
   
+  CONSTRAINT id_persona_FK FOREIGN KEY (id_usuario) REFERENCES personas (id_persona)
 );
+
+CREATE TABLE transportadores (
+  id_transportador NUMERIC NOT NULL,
+  estado VARCHAR2(1) DEFAULT 'S' CHECK (estado IN ('S', 'A')),
+  
+  CONSTRAINT id_persona_FK2 FOREIGN KEY (id_transportador) REFERENCES personas (id_persona)
+);
+
+CREATE TABLE tipos_vehiculo (
+  id_tipo NUMERIC PRIMARY KEY,
+  nombre varchar2(20)
+);
+
+CREATE TABLE vehiculos (
+  id_vehiculo NUMERIC GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
+  tipo NUMERIC,
+  marca varchar2(20),
+  referencia varchar2(20),
+  placa varchar2(10),
+  modelo number,
+  fecha_registro DATE,
+  
+  CONSTRAINT tipo_vehiculo_FK FOREIGN KEY (tipo) REFERENCES tipos_vehiculo (id_tipo)
+);
+
+CREATE TABLE transp_vehiculos (
+  id_transp NUMERIC NOT NULL,
+  id_vehiculo NUMERIC NOT NULL,
+  
+  CONSTRAINT transp_vehiculos_PK PRIMARY KEY (id_transp, id_vehiculo),
+  CONSTRAINT id_transp_FK FOREIGN KEY (id_transp) REFERENCES personas (id_persona),
+  CONSTRAINT id_vehiculo_FK FOREIGN KEY (id_vehiculo) REFERENCES  vehiculos (id_vehiculo)
+);
+
+CREATE TABLE localizaciones (
+  id_localizacion NUMERIC NOT NULL,
+  latitud NUMERIC(12,8),
+  longitud NUMERIC(12,8),
+  fecha_actualizacion DATE,
+  
+  CONSTRAINT id_user_tranps_PK FOREIGN KEY (id_localizacion) REFERENCES personas (id_persona)
+);
+
+CREATE TABLE servicios (
+  id_servicio  NUMERIC GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
+  id_usuario NUMERIC,
+  id_transportador NUMERIC,
+  origen_lat NUMERIC(12,8),
+  origen_lng NUMERIC(12,8),
+  destino_lat NUMERIC(12,8),
+  destino_lng NUMERIC(12,8),
+  fecha_inicio DATE,
+  fecha_fin DATE,
+  tipo_servicio VARCHAR2(2) DEFAULT 'A' CHECK (tipo_servicio IN ('A', 'P')),
+  
+  CONSTRAINT id_usuario_FK FOREIGN KEY (id_usuario) REFERENCES personas (id_persona),
+  CONSTRAINT id_transportador_FK FOREIGN KEY (id_transportador) REFERENCES personas (id_persona)
+);
+
