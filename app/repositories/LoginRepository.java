@@ -21,6 +21,7 @@ public class LoginRepository {
 
     public boolean verifyCredentials (User user ){
 
+        boolean response;
         PreparedStatement preparedStatement = null;
         Connection conn =null;
 
@@ -34,7 +35,8 @@ public class LoginRepository {
 
             ResultSet result = preparedStatement.executeQuery();
 
-            return result.next();
+            response = result.next();
+            conn.close();
 
         }
         catch (SQLException e){
@@ -43,6 +45,9 @@ public class LoginRepository {
         catch (Exception ex){
             return false;
         }
+
+        return response;
+
     }
 
 }

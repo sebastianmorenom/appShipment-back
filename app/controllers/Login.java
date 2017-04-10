@@ -21,17 +21,15 @@ public class Login extends Controller {
 
         LoginRepository loginRepository = new LoginRepository(db);
         JsonNode json = request().body().asJson();
-        System.out.println(json);
         if(json == null) {
             return badRequest("Expecting Json data");
         } else {
             User user = Json.fromJson(json, User.class);
-            if(user.username == null ) {
-                return badRequest("Missing parameter [username]");
-            } else if ( user.password == null ) {
-                return badRequest("Missing parameter [password]");
-            }else
-            {
+            if(user.username == null &&  user.password == null ) {
+                return badRequest("Missing parameters: Expecting object {username, password}");
+            }
+            else {
+
                 boolean validCredentials = loginRepository.verifyCredentials(user);
                 if( validCredentials ){
                     return ok("Hello " + user.username + " - "+ user.password);
@@ -41,6 +39,6 @@ public class Login extends Controller {
                 }
             }
         }
-    }
+      }
 
 }
