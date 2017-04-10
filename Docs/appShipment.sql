@@ -124,3 +124,4 @@ CREATE TABLE paquetes (
 );
 
 INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 1234, 3003216598, 'Fizz', 'Seajoker', 'fizz@seajoker.com', 'fizz', null, 4.32, 'S');
+INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 1234, 3003216598, 'Fizz', 'Seajoker', 'fizz@seajoker.com', 'fizz', null, 4.32, 'S');

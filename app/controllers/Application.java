@@ -9,6 +9,7 @@ import play.libs.Json;
 import play.mvc.*;
 
 import repositories.LocalizationRepository;
+import repositories.TransportadoresRepository;
 import views.html.*;
 
 public class Application extends Controller {
@@ -65,6 +66,10 @@ public class Application extends Controller {
                     return ok("Localization doesnt exist");
             }
         }
+    }
 
+    public Result getTransportadores (){
+        TransportadoresRepository transportadoresRepository = new TransportadoresRepository(db);
+        return ok(Json.toJson(transportadoresRepository.getTransportadores()));
     }
 }
