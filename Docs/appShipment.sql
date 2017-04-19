@@ -1,7 +1,7 @@
-/*
+/*alter session set "_ORACLE_SCRIPT"=true;
+
 CREATE USER AS_ADMIN IDENTIFIED BY oracle12c;
-GRANT ALL PRIVILEGES TO AS_ADMIN;
-*/
+GRANT ALL PRIVILEGES TO AS_ADMIN;*/
 
 /* DROPS!
 */
@@ -39,7 +39,7 @@ CREATE TABLE usuarios (
 
 CREATE TABLE transportadores (
   id_transportador NUMERIC NOT NULL,
-  estado VARCHAR2(1) DEFAULT 'S' CHECK (estado IN ('S', 'A')),
+  estado VARCHAR2(1) DEFAULT 'S' CHECK (estado IN ('S', 'A', 'I')),
   
   CONSTRAINT id_persona_FK2 FOREIGN KEY (id_transportador) REFERENCES personas (id_persona)
 );
@@ -124,4 +124,6 @@ CREATE TABLE paquetes (
 );
 
 INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 1234, 3003216598, 'Fizz', 'Seajoker', 'fizz@seajoker.com', 'fizz', null, 4.32, 'S');
-INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 1234, 3003216598, 'Fizz', 'Seajoker', 'fizz@seajoker.com', 'fizz', null, 4.32, 'S');
+INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 4321, 3009876544, 'Jax', 'Handmaster', 'jax@handmaster.com', 'jax', null, 4.21, 'S');
+INSERT INTO usuarios (ID_USUARIO) VALUES (1001);
+INSERT INTO transportadores (ID_TRANSPORTADOR,ESTADO) VALUES (1002, 'S');

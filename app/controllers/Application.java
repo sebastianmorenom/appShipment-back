@@ -30,7 +30,7 @@ public class Application extends Controller {
         }
         else {
             Localization localization = Json.fromJson(json, Localization.class);
-            if(localization.username == null && localization.lat == null && localization.lng == null){
+            if(localization.username == null || localization.lat == null || localization.lng == null){
                 return badRequest("Missing parameters: Expecting object {username, lat, lng}");
             }
             else {

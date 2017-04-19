@@ -25,7 +25,7 @@ public class Login extends Controller {
             return badRequest("Expecting Json data");
         } else {
             User user = Json.fromJson(json, User.class);
-            if(user.username == null &&  user.password == null ) {
+            if(user.username == null ||  user.password == null ) {
                 return badRequest("Missing parameters: Expecting object {username, password}");
             }
             else {
@@ -39,6 +39,5 @@ public class Login extends Controller {
                 }
             }
         }
-      }
-
+    }
 }
