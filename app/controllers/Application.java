@@ -2,6 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
+import model.CarDetail;
 import model.Localization;
 import play.*;
 import play.api.db.Database;
@@ -71,5 +72,32 @@ public class Application extends Controller {
     public Result getTransportadores (){
         TransportadoresRepository transportadoresRepository = new TransportadoresRepository(db);
         return ok(Json.toJson(transportadoresRepository.getTransportadores()));
+    }
+
+    // Funcion para instanciar y añadir un vehiculo a un usuario dado su username
+
+    public Result addVehicle(){
+
+        TransportadoresRepository transportadoresRepository = new TransportadoresRepository(db);
+        JsonNode json = request().body().asJson();
+        String username = json.get("username").toString();
+        if(json == null){
+            return badRequest("Expecting Json data");
+        }
+        else{
+            CarDetail carDetail = Json.fromJson(json, CarDetail.class);
+            if (carDetail.model <= 1980 || carDetail.reference == null || carDetail.type == null || carDetail.id == null ){
+                return badRequest("Missing parameters: Expecting object (model)");
+            }
+            else{
+               boolean success = transportadoresRepository.addNewVehicle(carDetail,username);
+               if (success == true){
+                   return ok(" Vehicle Added to: (username) ");
+               }
+               else{
+                   return ok("Vehicle cannot be Added to: (username)");
+               }
+            }
+        }
     }
 }

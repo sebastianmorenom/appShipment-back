@@ -1,5 +1,6 @@
 package DAOs;
 
+import model.CarDetail;
 import model.Transportador;
 import play.api.db.Database;
 
@@ -80,6 +81,12 @@ public class PersonasDAO {
         }
 
         return transportadores;
+    }
+
+    // Función para añadir un vehiculo a un username en la BD
+    public boolean addNewVehicle(CarDetail carDetail, int id_user){
+
+        return true;
     }
 
 }
