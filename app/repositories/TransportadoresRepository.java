@@ -1,6 +1,7 @@
 package repositories;
 
 import DAOs.PersonasDAO;
+import DAOs.VehiculosDAO;
 import model.CarDetail;
 import model.Transportador;
 import play.api.db.Database;
@@ -36,17 +37,24 @@ public class TransportadoresRepository {
 
     public boolean addNewVehicle(CarDetail carDetail, String username){
         Connection conn;
-        boolean request = false;
+        int id_vehicle = 0;
         try {
             conn = db.getConnection();
             PersonasDAO personasDAO = new PersonasDAO(db, conn);
+            VehiculosDAO vehiculosDAO = new VehiculosDAO(db,conn);
             int transportador = personasDAO.getPersonaIdByUsername(username);
-            request = personasDAO.addNewVehicle(carDetail,transportador);
+            id_vehicle = vehiculosDAO.AddVehicle(carDetail);
+            if(id_vehicle != -1){
+                vehiculosDAO.AssociateVehicleToTransporter(transportador,id_vehicle);
+            }
+            else{
+                return false;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-       return request;
+       return true;
     }
 }

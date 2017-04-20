@@ -11,6 +11,7 @@ import play.mvc.*;
 
 import repositories.LocalizationRepository;
 import repositories.TransportadoresRepository;
+import repositories.VehiculosRepository;
 import views.html.*;
 
 public class Application extends Controller {
@@ -86,7 +87,7 @@ public class Application extends Controller {
         }
         else{
             CarDetail carDetail = Json.fromJson(json, CarDetail.class);
-            if (carDetail.model <= 1980 || carDetail.reference == null || carDetail.type == null || carDetail.id == null ){
+            if (carDetail.model <= 1980 || carDetail.reference == null || carDetail.type == null || carDetail.placa == null ){
                 return badRequest("Missing parameters: Expecting object (model)");
             }
             else{
@@ -99,5 +100,10 @@ public class Application extends Controller {
                }
             }
         }
+    }
+
+    public Result getAllVehicleTypes(){
+        VehiculosRepository vehiculosRepository = new VehiculosRepository(db);
+        return ok(Json.toJson(vehiculosRepository.getAllVehiclesType()));
     }
 }

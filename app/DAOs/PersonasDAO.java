@@ -68,7 +68,7 @@ public class PersonasDAO {
                 trans.pos.lat = result.getDouble("LATITUD");
                 trans.pos.lng = result.getDouble("LONGITUD");
                 trans.carDetail.type = result.getString("TIPO");
-                trans.carDetail.id = result.getString("PLACA");
+                trans.carDetail.placa = result.getString("PLACA");
                 trans.carDetail.model = result.getInt("MODELO");
                 trans.carDetail.reference = result.getString("REFERENCIA");
 
