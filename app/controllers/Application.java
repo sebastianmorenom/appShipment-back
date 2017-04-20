@@ -76,7 +76,7 @@ public class Application extends Controller {
             return ok(Json.toJson(transportadoresRepository.getTransportadores()));
         }
         else {
-            String estado = (json.has("estado"))?json.get("estado").toString():null;
+            String estado = (json.has("estado"))?json.get("estado").asText():null;
             if (estado == null){
                 return ok(Json.toJson(transportadoresRepository.getTransportadores()));
             }
