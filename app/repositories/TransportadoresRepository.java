@@ -37,15 +37,16 @@ public class TransportadoresRepository {
 
     public boolean addNewVehicle(CarDetail carDetail, String username){
         Connection conn;
+        boolean exito = false;
         int id_vehicle = 0;
         try {
             conn = db.getConnection();
             PersonasDAO personasDAO = new PersonasDAO(db, conn);
             VehiculosDAO vehiculosDAO = new VehiculosDAO(db,conn);
-            int transportador = personasDAO.getPersonaIdByUsername(username);
+            //int transportador = personasDAO.getPersonaIdByUsername(username);
             id_vehicle = vehiculosDAO.AddVehicle(carDetail);
             if(id_vehicle != -1){
-                vehiculosDAO.AssociateVehicleToTransporter(transportador,id_vehicle);
+               exito = vehiculosDAO.AssociateVehicleToTransporter(1002,id_vehicle);
             }
             else{
                 return false;
@@ -55,6 +56,6 @@ public class TransportadoresRepository {
             e.printStackTrace();
         }
 
-       return true;
+       return exito;
     }
 }

@@ -2,8 +2,10 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import model.CarDetail;
 import model.Localization;
+import org.springframework.util.SocketUtils;
 import play.*;
 import play.api.db.Database;
 import play.libs.Json;
@@ -87,13 +89,13 @@ public class Application extends Controller {
         }
         else{
             CarDetail carDetail = Json.fromJson(json, CarDetail.class);
-            if (carDetail.model <= 1980 || carDetail.reference == null || carDetail.type == null || carDetail.placa == null ){
-                return badRequest("Missing parameters: Expecting object (model)");
+            if (carDetail.model <= 1980 || carDetail.reference == null || carDetail.type == -1 || carDetail.placa == null || carDetail.marca == null ){
+                return badRequest("Error in parameters: "+ carDetail.model +carDetail.reference+carDetail.type+carDetail.placa+carDetail.marca);
             }
             else{
                boolean success = transportadoresRepository.addNewVehicle(carDetail,username);
                if (success == true){
-                   return ok(" Vehicle Added to: (username) ");
+                   return ok(" Vehicle Added to: "+username);
                }
                else{
                    return ok("Vehicle cannot be Added to: (username)");

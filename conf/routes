@@ -18,8 +18,7 @@ GET    /transportadores         controllers.Application.getTransportadores()
 GET     /assets/*file                               controllers.Assets.at(path="/public", file)
 
 # Add new vehicle to user
-POST /vehiculos/nuevo_vehiculo                     controllers.Application.addVehicle()
+POST /vehiculos/new_vehicle                     controllers.Application.addVehicle()
 
 # Get all types of vehicle
 POST /vehiculos/getAllVehicleTypes                 controllers.Application.getAllVehicleTypes()
-

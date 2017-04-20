@@ -67,7 +67,7 @@ public class PersonasDAO {
                 trans.calificacion = result.getDouble("CALIFICACION");
                 trans.pos.lat = result.getDouble("LATITUD");
                 trans.pos.lng = result.getDouble("LONGITUD");
-                trans.carDetail.type = result.getString("TIPO");
+                trans.carDetail.type = result.getInt("TIPO");
                 trans.carDetail.placa = result.getString("PLACA");
                 trans.carDetail.model = result.getInt("MODELO");
                 trans.carDetail.reference = result.getString("REFERENCIA");
@@ -82,11 +82,4 @@ public class PersonasDAO {
 
         return transportadores;
     }
-
-    // Función para añadir un vehiculo a un username en la BD
-    public boolean addNewVehicle(CarDetail carDetail, int id_user){
-
-        return true;
-    }
-
 }
