@@ -82,4 +82,10 @@ public class PersonasDAO {
 
         return transportadores;
     }
+
+    /*public List<CarDetail> getVehiclesByTransporter(){
+        List<CarDetail> vehiculos = new ArrayList<>();
+
+        return vehiculos;
+    }*/
 }

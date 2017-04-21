@@ -90,7 +90,7 @@ public class Application extends Controller {
         else{
             CarDetail carDetail = Json.fromJson(json, CarDetail.class);
             if (carDetail.model <= 1980 || carDetail.reference == null || carDetail.type == -1 || carDetail.placa == null || carDetail.marca == null ){
-                return badRequest("Error in parameters: "+ carDetail.model +carDetail.reference+carDetail.type+carDetail.placa+carDetail.marca);
+                return badRequest("Error in parameters: "+ carDetail.model + " "+ carDetail.reference+" "+carDetail.type+" "+carDetail.placa+" "+carDetail.marca);
             }
             else{
                boolean success = transportadoresRepository.addNewVehicle(carDetail,username);
@@ -108,4 +108,9 @@ public class Application extends Controller {
         VehiculosRepository vehiculosRepository = new VehiculosRepository(db);
         return ok(Json.toJson(vehiculosRepository.getAllVehiclesType()));
     }
+
+    /*public Result getVehiclesByTransporter(){
+        TransportadoresRepository transportadoresRepository = new TransportadoresRepository(db);
+        return ok(Json.toJson(transportadoresRepository.getVehiclesByTransporter()));
+    }*/
 }

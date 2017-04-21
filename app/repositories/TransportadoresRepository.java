@@ -51,11 +51,28 @@ public class TransportadoresRepository {
             else{
                 return false;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
        return exito;
     }
+ /*
+    public List<CarDetail> getVehiclesByTransporter() throws SQLException {
+        boolean exito = false;
+        List<CarDetail> vehiculos = new ArrayList<>();
+        Connection conn;
+
+        try{
+            conn = db.getConnection();
+            PersonasDAO personasDAO = new PersonasDAO(db,conn);
+            vehiculos = personasDAO.getVehiclesByTransporter();
+
+        } catch(SQLException e){
+            throw new SQLException(e.getMessage(), e);
+        }
+
+        return vehiculos;
+    }
+*/
 }
