@@ -4,6 +4,7 @@ package model;
 public class Transportador {
     public String name;
     public Double calificacion;
+    public String estado;
     public CarDetail carDetail;
     public Localization pos;
 

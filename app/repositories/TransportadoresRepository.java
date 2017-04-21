@@ -23,11 +23,25 @@ public class TransportadoresRepository {
 
         List<Transportador> transportadores = new ArrayList<>();
         Connection conn;
-
         try {
             conn = db.getConnection();
             PersonasDAO personasDAO = new PersonasDAO(db,conn);
             transportadores = personasDAO.getAllTransportadores();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return transportadores;
+    }
+
+    public List<Transportador> getTransportadoresByState(String estado){
+
+        List<Transportador> transportadores = new ArrayList<>();
+        Connection conn;
+        try {
+            conn = db.getConnection();
+            PersonasDAO personasDAO = new PersonasDAO(db,conn);
+            transportadores = personasDAO.getAllTransportadoresByState(estado);
 
         } catch (SQLException e) {
             e.printStackTrace();

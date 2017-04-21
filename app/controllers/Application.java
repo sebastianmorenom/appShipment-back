@@ -74,7 +74,19 @@ public class Application extends Controller {
 
     public Result getTransportadores (){
         TransportadoresRepository transportadoresRepository = new TransportadoresRepository(db);
-        return ok(Json.toJson(transportadoresRepository.getTransportadores()));
+        JsonNode json = request().body().asJson();
+        if( json == null){
+            return ok(Json.toJson(transportadoresRepository.getTransportadores()));
+        }
+        else {
+            String estado = (json.has("estado"))?json.get("estado").asText():null;
+            if (estado == null){
+                return ok(Json.toJson(transportadoresRepository.getTransportadores()));
+            }
+            else {
+                return ok(Json.toJson(transportadoresRepository.getTransportadoresByState(estado)));
+            }
+        }
     }
 
     // Funcion para instanciar y añadir un vehiculo a un usuario dado su username

@@ -60,17 +60,7 @@ public class PersonasDAO {
 
             ResultSet result = preparedStatement.executeQuery();
 
-            while (result.next()){
-                System.out.println(" entrasmos");
-                Transportador trans = new Transportador();
-                trans.name = result.getString("NOMBRE") + result.getString("APELLIDO");
-                trans.calificacion = result.getDouble("CALIFICACION");
-                trans.pos.lat = result.getDouble("LATITUD");
-                trans.pos.lng = result.getDouble("LONGITUD");
-                trans.carDetail.type = result.getInt("TIPO");
-                trans.carDetail.placa = result.getString("PLACA");
-                trans.carDetail.model = result.getInt("MODELO");
-                trans.carDetail.reference = result.getString("REFERENCIA");
+            transportadores = generateTransp(result);
 
                 transportadores.add(trans);
 
@@ -82,10 +72,55 @@ public class PersonasDAO {
 
         return transportadores;
     }
+public List<Transportador> getAllTransportadoresByState(String estado) throws SQLException{
+        List<Transportador> transportadores = new ArrayList<>();
+        PreparedStatement preparedStatement;
+        String statement = "select p.nombre, p.apellido, p.calificacion, t.ESTADO, l.LATITUD, l.LONGITUD,l.FECHA_ACTUALIZACION, v.MARCA,v.REFERENCIA, v.MODELO, v.PLACA, vt.NOMBRE as tipo \n" +
+                    "from personas p \n" +
+                    "INNER JOIN Localizaciones l on p.ID_PERSONA = l.ID_LOCALIZACION\n" +
+                    "INNER JOIN TRANSPORTADORES t on p.ID_PERSONA = t.ID_TRANSPORTADOR \n" +
+                    "INNER JOIN TRANSP_VEHICULOS tv on t.ID_TRANSPORTADOR=tv.ID_TRANSP \n" +
+                    "INNER JOIN vehiculos v on tv.ID_VEHICULO=v.ID_VEHICULO\n" +
+                    "INNER JOIN TIPOS_VEHICULO vt on v.TIPO=vt.ID_TIPO \n" +
+                    "WHERE t.ESTADO = ? ";
 
-    /*public List<CarDetail> getVehiclesByTransporter(){
-        List<CarDetail> vehiculos = new ArrayList<>();
 
-        return vehiculos;
-    }*/
+        try {
+            preparedStatement = conn.prepareStatement(statement);
+            preparedStatement.setString(1, estado);
+            ResultSet result = preparedStatement.executeQuery();
+
+            transportadores = generateTransp(result);
+
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage(), e);
+        }
+
+        return transportadores;
+    }
+	
+    // Función para añadir un vehiculo a un username en la BD
+    public boolean addNewVehicle(CarDetail carDetail, int id_user){
+
+        return true;
+    }
+
+    public List<Transportador> generateTransp(ResultSet result) throws SQLException{
+        List<Transportador> transportadores = new ArrayList<>();
+        while (result.next()){
+            Transportador trans = new Transportador();
+            trans.name = result.getString("NOMBRE") + result.getString("APELLIDO");
+            trans.estado = result.getString("ESTADO");
+            trans.calificacion = result.getDouble("CALIFICACION");
+            trans.pos.lat = result.getDouble("LATITUD");
+            trans.pos.lng = result.getDouble("LONGITUD");
+            trans.carDetail.type = result.getString("TIPO");
+            trans.carDetail.placa = result.getString("PLACA");
+            trans.carDetail.model = result.getInt("MODELO");
+            trans.carDetail.reference = result.getString("REFERENCIA");
+
+            transportadores.add(trans);
+        }
+        return transportadores;
+    }
 }
