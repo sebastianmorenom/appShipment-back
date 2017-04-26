@@ -71,16 +71,14 @@ public class TransportadoresRepository {
 
        return exito;
     }
- /*
-    public List<CarDetail> getVehiclesByTransporter() throws SQLException {
-        boolean exito = false;
+     public List<CarDetail> getVehiclesByTransporter(int id_transporter) throws SQLException {
         List<CarDetail> vehiculos = new ArrayList<>();
         Connection conn;
 
         try{
             conn = db.getConnection();
             PersonasDAO personasDAO = new PersonasDAO(db,conn);
-            vehiculos = personasDAO.getVehiclesByTransporter();
+            vehiculos = personasDAO.getVehiclesByTransporter(id_transporter);
 
         } catch(SQLException e){
             throw new SQLException(e.getMessage(), e);
@@ -88,5 +86,14 @@ public class TransportadoresRepository {
 
         return vehiculos;
     }
-*/
+
+    public boolean updateVehicleByTransporter(CarDetail carDetail) throws SQLException {
+        boolean exito =false;
+        Connection conn;
+
+        conn = db.getConnection();
+        VehiculosDAO vehiculosDAO = new VehiculosDAO(db,conn);
+        exito = vehiculosDAO.updateVehicleByTransporter(carDetail);
+        return exito;
+    }
 }

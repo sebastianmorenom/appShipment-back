@@ -3,6 +3,7 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import com.sun.org.apache.xpath.internal.SourceTree;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import model.CarDetail;
 import model.Localization;
 import org.springframework.util.SocketUtils;
@@ -15,6 +16,9 @@ import repositories.LocalizationRepository;
 import repositories.TransportadoresRepository;
 import repositories.VehiculosRepository;
 import views.html.*;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class Application extends Controller {
 
@@ -110,7 +114,7 @@ public class Application extends Controller {
                    return ok(" Vehicle Added to: "+username);
                }
                else{
-                   return ok("Vehicle cannot be Added to: (username)");
+                   return ok("Vehicle cannot be Added to: "+username);
                }
             }
         }
@@ -121,8 +125,29 @@ public class Application extends Controller {
         return ok(Json.toJson(vehiculosRepository.getAllVehiclesType()));
     }
 
-    /*public Result getVehiclesByTransporter(){
+    public Result getVehiclesByTransporter() throws SQLException {
         TransportadoresRepository transportadoresRepository = new TransportadoresRepository(db);
-        return ok(Json.toJson(transportadoresRepository.getVehiclesByTransporter()));
-    }*/
+        JsonNode json = request().body().asJson();
+        int id_transporter = json.get("transporter").asInt();
+
+        return ok("Vehicles for id "+id_transporter+" "+Json.toJson(transportadoresRepository.getVehiclesByTransporter(id_transporter)));
+    }
+
+    public Result updateVehicleByTransporter() throws SQLException {
+      TransportadoresRepository transportadoresRepository = new TransportadoresRepository(db);
+      JsonNode json = request().body().asJson();
+      CarDetail carDetail = Json.fromJson(json,CarDetail.class);
+      if (carDetail.marca == null || carDetail.model == -1 || carDetail.type == -1 || carDetail.reference == null || carDetail.placa == null || carDetail.id == -1){
+          return badRequest("Error in parameters: "+carDetail.model + " "+ carDetail.reference+" "+carDetail.type+" "+carDetail.placa+" "+carDetail.marca +" "+carDetail.id);
+      }
+      else{
+          boolean updated = transportadoresRepository.updateVehicleByTransporter(carDetail);
+          if (updated){
+              return ok("Updated vehicle");
+          }
+          else{
+              return internalServerError("Vehicle - not updated");
+          }
+      }
+    }
 }

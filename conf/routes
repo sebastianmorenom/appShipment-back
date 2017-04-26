@@ -22,3 +22,10 @@ POST /vehiculos/new_vehicle                     controllers.Application.addVehic
 
 # Get all types of vehicle
 POST /vehiculos/getAllVehicleTypes                 controllers.Application.getAllVehicleTypes()
+
+#Get all vehicles by Transporter
+POST /transportador/getVehiclesByTransporter        controllers.Application.getVehiclesByTransporter()
+
+#Edit vehicle by Transporter
+POST /transportador/updateVehicleByTransporter      controllers.Application.updateVehicleByTransporter()
+

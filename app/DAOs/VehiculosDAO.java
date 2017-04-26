@@ -63,6 +63,7 @@ public class VehiculosDAO {
 
         try {
             preparedStatement = conn.prepareStatement(statement);
+
             ResultSet result = preparedStatement.executeQuery();
 
             while (result.next()){
@@ -76,4 +77,26 @@ public class VehiculosDAO {
 
         return tiposVehiculo;
     }
+
+    public boolean updateVehicleByTransporter(CarDetail carDetail) throws SQLException {
+        PreparedStatement preparedStatement;
+        String statement = "UPDATE VEHICULOS SET TIPO=?, MARCA=?, REFERENCIA=?, PLACA=?, MODELO=? WHERE ID_VEHICULO=?";
+        boolean exito = false;
+        try{
+            preparedStatement = conn.prepareStatement(statement);
+            preparedStatement.setInt(1,carDetail.type);
+            preparedStatement.setString(2,carDetail.marca);
+            preparedStatement.setString(3,carDetail.reference);
+            preparedStatement.setString(4,carDetail.placa);
+            preparedStatement.setInt(5,carDetail.model);
+            preparedStatement.setInt(6,carDetail.id);
+
+            int result = preparedStatement.executeUpdate();
+            if (result == 1) exito = true;
+        }catch(SQLException e){
+            throw new SQLException(e.getMessage(), e);
+        }
+        return exito;
+    }
+
 }

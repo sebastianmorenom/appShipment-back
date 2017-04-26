@@ -1,6 +1,7 @@
 package model;
 
 public class CarDetail {
+    public int id;
     public int type;
     public String reference;
     public String placa;

@@ -16,7 +16,7 @@ public class PersonasDAO {
     private Database db;
     private Connection conn;
 
-    public PersonasDAO(Database db, Connection conn){
+    public PersonasDAO(Database db, Connection conn) throws SQLException {
         this.db = db;
         this.conn = conn;
     }
@@ -57,15 +57,9 @@ public class PersonasDAO {
 
         try {
             preparedStatement = conn.prepareStatement(statement);
-
             ResultSet result = preparedStatement.executeQuery();
-
             transportadores = generateTransp(result);
-
-                transportadores.add(trans);
-
-            }
-
+            //transportadores.add(trans);
         } catch (SQLException e) {
             throw new SQLException(e.getMessage(), e);
         }
@@ -114,7 +108,7 @@ public List<Transportador> getAllTransportadoresByState(String estado) throws SQ
             trans.calificacion = result.getDouble("CALIFICACION");
             trans.pos.lat = result.getDouble("LATITUD");
             trans.pos.lng = result.getDouble("LONGITUD");
-            trans.carDetail.type = result.getString("TIPO");
+            trans.carDetail.type = result.getInt("TIPO");
             trans.carDetail.placa = result.getString("PLACA");
             trans.carDetail.model = result.getInt("MODELO");
             trans.carDetail.reference = result.getString("REFERENCIA");
@@ -122,5 +116,31 @@ public List<Transportador> getAllTransportadoresByState(String estado) throws SQ
             transportadores.add(trans);
         }
         return transportadores;
+    }
+
+    public List<CarDetail> getVehiclesByTransporter(int id_transporter) throws SQLException {
+        List<CarDetail> vehicles = new ArrayList<>();
+        PreparedStatement preparedStatement;
+        String statement = "SELECT v.ID_VEHICULO, v.TIPO, v.MODELO,v.MARCA, v.PLACA, v.REFERENCIA  FROM VEHICULOS v RIGHT OUTER JOIN TRANSP_VEHICULOS tv ON tv.ID_TRANSP = ?";
+
+        try {
+            preparedStatement = conn.prepareStatement(statement);
+            preparedStatement.setInt(1,id_transporter);
+            ResultSet result = preparedStatement.executeQuery();
+            while(result.next()){
+                CarDetail carDetail = new CarDetail();
+                carDetail.placa = result.getString("PLACA");
+                carDetail.reference = result.getString("REFERENCIA");
+                carDetail.type = result.getInt("TIPO");
+                carDetail.model = result.getInt("MODELO");
+                carDetail.marca = result.getString("MARCA");
+                vehicles.add(carDetail);
+            }
+
+        } catch(SQLException e){
+            throw new SQLException(e.getMessage(), e);
+        }
+
+        return vehicles;
     }
 }
