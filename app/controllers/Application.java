@@ -76,7 +76,7 @@ public class Application extends Controller {
         }
     }
 
-    public Result getTransportadores (){
+    public Result getTransporter (){
         TransportadoresRepository transportadoresRepository = new TransportadoresRepository(db);
         JsonNode json = request().body().asJson();
         if( json == null){
@@ -89,6 +89,25 @@ public class Application extends Controller {
             }
             else {
                 return ok(Json.toJson(transportadoresRepository.getTransportadoresByState(estado)));
+            }
+        }
+    }
+
+    public Result getTransportersClosed (){
+        TransportadoresRepository transportadoresRepository = new TransportadoresRepository(db);
+        JsonNode json = request().body().asJson();
+        if( json == null){
+            return badRequest(Json.toJson("Data not found"));
+        }
+        else {
+            String estado = (json.has("estado"))?json.get("estado").asText():null;
+            double lat = (json.has("lat"))?json.get("lat").asDouble():0;
+            double lng = (json.has("lat"))?json.get("lat").asDouble():0;
+            if (estado == null ){
+                return badRequest(Json.toJson("Wrong client's lat and lng "));
+            }
+            else {
+                return ok(Json.toJson(transportadoresRepository.getTransportadoresClosed(estado, lat, lng)));
             }
         }
     }

@@ -14,6 +14,8 @@ import java.util.List;
 public class TransportadoresRepository {
 
     private Database db;
+    private final double MAX_DISTANCE = 1;
+    private final double EARTH_RADIUS = 6371.01;
 
     public TransportadoresRepository(Database db){
         this.db = db;
@@ -42,6 +44,22 @@ public class TransportadoresRepository {
             conn = db.getConnection();
             PersonasDAO personasDAO = new PersonasDAO(db,conn);
             transportadores = personasDAO.getAllTransportadoresByState(estado);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return transportadores;
+    }
+
+    public List<Transportador> getTransportadoresClosed(String estado, double lat, double lng){
+
+        List<Transportador> transportadores = new ArrayList<>();
+        Connection conn;
+        try {
+            conn = db.getConnection();
+            PersonasDAO personasDAO = new PersonasDAO(db,conn);
+            transportadores = personasDAO.getAllTransportadoresByState(estado);
+            transportadores = selectClosedTransporters(transportadores, lat, lng);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,5 +113,29 @@ public class TransportadoresRepository {
         VehiculosDAO vehiculosDAO = new VehiculosDAO(db,conn);
         exito = vehiculosDAO.updateVehicleByTransporter(carDetail);
         return exito;
+    }
+
+    public List<Transportador> selectClosedTransporters(List<Transportador> transporters, double lat, double lng){
+        List<Transportador> selectedTrasnporters = new ArrayList<>();
+        for ( Transportador t : transporters) {
+
+            double latDistance = Math.toRadians(t.pos.lat - lat);
+            double lonDistance = Math.toRadians(t.pos.lng - lng);
+            double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                    + Math.cos(Math.toRadians(lat)) * Math.cos(Math.toRadians(t.pos.lat))
+                    * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            double distance = EARTH_RADIUS * c ; // convert to meters
+            System.out.println(distance);
+
+            double height = 0 - 0;
+
+            distance = Math.pow(distance, 2) + Math.pow(height, 2);
+
+            Math.sqrt(distance);
+            selectedTrasnporters.add(t);
+        }
+
+        return selectedTrasnporters;
     }
 }

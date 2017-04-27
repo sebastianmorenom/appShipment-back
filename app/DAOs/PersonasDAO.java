@@ -59,7 +59,6 @@ public class PersonasDAO {
             preparedStatement = conn.prepareStatement(statement);
             ResultSet result = preparedStatement.executeQuery();
             transportadores = generateTransp(result);
-            //transportadores.add(trans);
         } catch (SQLException e) {
             throw new SQLException(e.getMessage(), e);
         }
@@ -103,15 +102,16 @@ public List<Transportador> getAllTransportadoresByState(String estado) throws SQ
         List<Transportador> transportadores = new ArrayList<>();
         while (result.next()){
             Transportador trans = new Transportador();
-            trans.name = result.getString("NOMBRE") + result.getString("APELLIDO");
+            trans.name = result.getString("NOMBRE") + " " + result.getString("APELLIDO");
             trans.estado = result.getString("ESTADO");
             trans.calificacion = result.getDouble("CALIFICACION");
             trans.pos.lat = result.getDouble("LATITUD");
             trans.pos.lng = result.getDouble("LONGITUD");
-            trans.carDetail.type = result.getInt("TIPO");
+            trans.carDetail.typeDesc = result.getString("TIPO");
             trans.carDetail.placa = result.getString("PLACA");
             trans.carDetail.model = result.getInt("MODELO");
             trans.carDetail.reference = result.getString("REFERENCIA");
+            trans.carDetail.marca = result.getString("MARCA");
 
             transportadores.add(trans);
         }
@@ -131,7 +131,7 @@ public List<Transportador> getAllTransportadoresByState(String estado) throws SQ
                 CarDetail carDetail = new CarDetail();
                 carDetail.placa = result.getString("PLACA");
                 carDetail.reference = result.getString("REFERENCIA");
-                carDetail.type = result.getInt("TIPO");
+                carDetail.typeDesc = result.getString("TIPO");
                 carDetail.model = result.getInt("MODELO");
                 carDetail.marca = result.getString("MARCA");
                 vehicles.add(carDetail);

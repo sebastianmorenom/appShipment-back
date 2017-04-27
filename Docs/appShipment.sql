@@ -125,5 +125,10 @@ CREATE TABLE paquetes (
 
 INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 1234, 3003216598, 'Fizz', 'Seajoker', 'fizz@seajoker.com', 'fizz', null, 4.32, 'S');
 INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 4321, 3009876544, 'Jax', 'Handmaster', 'jax@handmaster.com', 'jax', null, 4.21, 'S');
+INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 5451, 3009876544, 'Kata', 'Rina', 'kata@rina.com', 'kata', null, 4.21, 'S');
+INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 9584, 3009876544, 'Diana', 'Moonlight', 'diana@moonlight.com', 'diana', null, 4.21, 'S');
+INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 1354, 3009876544, 'Twisted', 'Fate', 'twisted@fate.com', 'twisted', null, 4.21, 'S');
 INSERT INTO usuarios (ID_USUARIO) VALUES (1001);
-INSERT INTO transportadores (ID_TRANSPORTADOR,ESTADO) VALUES (1002, 'S');
+INSERT INTO transportadores (ID_TRANSPORTADOR,ESTADO) VALUES (1041, 'S');
+INSERT INTO transportadores (ID_TRANSPORTADOR,ESTADO) VALUES (1042, 'S');
+INSERT INTO transportadores (ID_TRANSPORTADOR,ESTADO) VALUES (1043, 'S');
