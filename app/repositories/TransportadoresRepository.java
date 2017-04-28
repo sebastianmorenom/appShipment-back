@@ -125,14 +125,10 @@ public class TransportadoresRepository {
                     + Math.cos(Math.toRadians(lat)) * Math.cos(Math.toRadians(t.pos.lat))
                     * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
             double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            double distance = EARTH_RADIUS * c ; // convert to meters
+            double distance = EARTH_RADIUS * c *1000; // convert to meters
             System.out.println(distance);
 
-            double height = 0 - 0;
 
-            distance = Math.pow(distance, 2) + Math.pow(height, 2);
-
-            Math.sqrt(distance);
             selectedTrasnporters.add(t);
         }
 

@@ -102,7 +102,7 @@ public class Application extends Controller {
         else {
             String estado = (json.has("estado"))?json.get("estado").asText():null;
             double lat = (json.has("lat"))?json.get("lat").asDouble():0;
-            double lng = (json.has("lat"))?json.get("lat").asDouble():0;
+            double lng = (json.has("lng"))?json.get("lng").asDouble():0;
             if (estado == null ){
                 return badRequest(Json.toJson("Wrong client's lat and lng "));
             }
