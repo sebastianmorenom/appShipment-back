@@ -125,10 +125,32 @@ CREATE TABLE paquetes (
 
 INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 1234, 3003216598, 'Fizz', 'Seajoker', 'fizz@seajoker.com', 'fizz', null, 4.32, 'S');
 INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 4321, 3009876544, 'Jax', 'Handmaster', 'jax@handmaster.com', 'jax', null, 4.21, 'S');
+INSERT INTO usuarios (ID_USUARIO) VALUES (1001);
+INSERT INTO transportadores (ID_USUARIO, ESTADO) VALUES (1002, 'S');
+
 INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 5451, 3009876544, 'Kata', 'Rina', 'kata@rina.com', 'kata', null, 4.21, 'S');
 INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 9584, 3009876544, 'Diana', 'Moonlight', 'diana@moonlight.com', 'diana', null, 4.21, 'S');
 INSERT INTO personas (tipo_id, nm_id, nm_celular, nombre, apellido, email, password, fecha_registro, calificacion, activo) VALUES ('CC', 1354, 3009876544, 'Twisted', 'Fate', 'twisted@fate.com', 'twisted', null, 4.21, 'S');
-INSERT INTO usuarios (ID_USUARIO) VALUES (1001);
-INSERT INTO transportadores (ID_TRANSPORTADOR,ESTADO) VALUES (1041, 'S');
-INSERT INTO transportadores (ID_TRANSPORTADOR,ESTADO) VALUES (1042, 'S');
-INSERT INTO transportadores (ID_TRANSPORTADOR,ESTADO) VALUES (1043, 'S');
+INSERT INTO transportadores (ID_TRANSPORTADOR,ESTADO) VALUES (1003, 'S');
+INSERT INTO transportadores (ID_TRANSPORTADOR,ESTADO) VALUES (1004, 'S');
+INSERT INTO transportadores (ID_TRANSPORTADOR,ESTADO) VALUES (1005, 'S');
+
+INSERT INTO TIPOS_VEHICULO (ID_TIPO,NOMBRE) VALUES (1, 'Carro');
+INSERT INTO TIPOS_VEHICULO (ID_TIPO,NOMBRE) VALUES (2, 'Camion');
+INSERT INTO TIPOS_VEHICULO (ID_TIPO,NOMBRE) VALUES (3, 'Moto');
+INSERT INTO TIPOS_VEHICULO (ID_TIPO,NOMBRE) VALUES (4, 'Bici');
+
+INSERT INTO VEHICULOS (TIPO, MARCA, REFERENCIA, PLACA, MODELO, FECHA_REGISTRO) VALUES (1, 'Hyundai', 'i35', 'ABC-123', 2015, null);
+INSERT INTO VEHICULOS (TIPO, MARCA, REFERENCIA, PLACA, MODELO, FECHA_REGISTRO) VALUES (1, 'BMW', '321', 'QWE-456', 2015, null);
+INSERT INTO VEHICULOS (TIPO, MARCA, REFERENCIA, PLACA, MODELO, FECHA_REGISTRO) VALUES (1, 'KIA', 'Cerato', 'ZXC-678', 2015, null);
+INSERT INTO VEHICULOS (TIPO, MARCA, REFERENCIA, PLACA, MODELO, FECHA_REGISTRO) VALUES (1, 'Chevrolet', 'Sail', 'QAZ-890', 2015, null);
+
+INSERT INTO TRANSP_VEHICULOS (ID_TRANSP, ID_VEHICULO) VALUES (1002, 1);
+INSERT INTO TRANSP_VEHICULOS (ID_TRANSP, ID_VEHICULO) VALUES (1022, 2);
+INSERT INTO TRANSP_VEHICULOS (ID_TRANSP, ID_VEHICULO) VALUES (1023, 3);
+INSERT INTO TRANSP_VEHICULOS (ID_TRANSP, ID_VEHICULO) VALUES (1025, 4);
+
+INSERT INTO LOCALIZACIONES (ID_LOCALIZACION, LATITUD, LONGITUD, FECHA_ACTUALIZACION) VALUES (1002, 4.744522, -74.066414,null);
+INSERT INTO LOCALIZACIONES (ID_LOCALIZACION, LATITUD, LONGITUD, FECHA_ACTUALIZACION) VALUES (1022, 4.751023, -74.066414,null);
+INSERT INTO LOCALIZACIONES (ID_LOCALIZACION, LATITUD, LONGITUD, FECHA_ACTUALIZACION) VALUES (1023, 4.756540, -74.063782,null);
+INSERT INTO LOCALIZACIONES (ID_LOCALIZACION, LATITUD, LONGITUD, FECHA_ACTUALIZACION) VALUES (1025, 4.752590, -74.049896,null);
