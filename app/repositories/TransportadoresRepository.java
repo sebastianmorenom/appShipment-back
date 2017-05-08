@@ -14,7 +14,7 @@ import java.util.List;
 public class TransportadoresRepository {
 
     private Database db;
-    private final double MAX_DISTANCE = 1;
+    private final double MAX_DISTANCE = 3000;
     private final double EARTH_RADIUS = 6371.01;
 
     public TransportadoresRepository(Database db){
@@ -126,10 +126,9 @@ public class TransportadoresRepository {
                     * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
             double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             double distance = EARTH_RADIUS * c *1000; // convert to meters
-            System.out.println(distance);
 
-
-            selectedTrasnporters.add(t);
+            if (distance < MAX_DISTANCE)
+                selectedTrasnporters.add(t);
         }
 
         return selectedTrasnporters;
