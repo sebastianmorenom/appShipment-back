@@ -36,6 +36,9 @@ public class LoginRepository {
             ResultSet result = preparedStatement.executeQuery();
 
             response = result.next();
+            if(response){
+                user.id = result.getInt("ID_PERSONA");
+            }
             conn.close();
 
         }
