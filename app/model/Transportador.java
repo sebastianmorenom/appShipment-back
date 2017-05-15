@@ -2,6 +2,7 @@ package model;
 
 
 public class Transportador {
+    public int id;
     public String name;
     public Double calificacion;
     public String estado;

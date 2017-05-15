@@ -47,7 +47,7 @@ public class PersonasDAO {
     public List<Transportador> getAllTransportadores() throws SQLException{
         List<Transportador> transportadores = new ArrayList<>();
         PreparedStatement preparedStatement;
-        String statement = "select p.nombre, p.apellido, p.calificacion, t.ESTADO, l.LATITUD, l.LONGITUD,l.FECHA_ACTUALIZACION, v.MARCA,v.REFERENCIA, v.MODELO, v.PLACA, vt.NOMBRE as tipo \n" +
+        String statement = "select p.ID_PERSONA, p.nombre, p.apellido, p.calificacion, t.ESTADO, l.LATITUD, l.LONGITUD,l.FECHA_ACTUALIZACION, v.MARCA,v.REFERENCIA, v.MODELO, v.PLACA, vt.NOMBRE as tipo \n" +
                 "from personas p \n" +
                 "INNER JOIN Localizaciones l on p.ID_PERSONA = l.ID_LOCALIZACION\n" +
                 "INNER JOIN TRANSPORTADORES t on p.ID_PERSONA = t.ID_TRANSPORTADOR \n" +
@@ -68,7 +68,7 @@ public class PersonasDAO {
 public List<Transportador> getAllTransportadoresByState(String estado) throws SQLException{
         List<Transportador> transportadores = new ArrayList<>();
         PreparedStatement preparedStatement;
-        String statement = "select p.nombre, p.apellido, p.calificacion, t.ESTADO, l.LATITUD, l.LONGITUD,l.FECHA_ACTUALIZACION, v.MARCA,v.REFERENCIA, v.MODELO, v.PLACA, vt.NOMBRE as tipo \n" +
+        String statement = "select p.ID_PERSONA, p.nombre, p.apellido, p.calificacion, t.ESTADO, l.LATITUD, l.LONGITUD,l.FECHA_ACTUALIZACION, v.MARCA,v.REFERENCIA, v.MODELO, v.PLACA, vt.NOMBRE as tipo \n" +
                     "from personas p \n" +
                     "INNER JOIN Localizaciones l on p.ID_PERSONA = l.ID_LOCALIZACION\n" +
                     "INNER JOIN TRANSPORTADORES t on p.ID_PERSONA = t.ID_TRANSPORTADOR \n" +
@@ -102,6 +102,7 @@ public List<Transportador> getAllTransportadoresByState(String estado) throws SQ
         List<Transportador> transportadores = new ArrayList<>();
         while (result.next()){
             Transportador trans = new Transportador();
+            trans.id = result.getInt("ID_PERSONA");
             trans.name = result.getString("NOMBRE") + " " + result.getString("APELLIDO");
             trans.estado = result.getString("ESTADO");
             trans.calificacion = result.getDouble("CALIFICACION");

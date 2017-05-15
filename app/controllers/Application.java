@@ -2,12 +2,8 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
-import com.sun.org.apache.xpath.internal.SourceTree;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import model.CarDetail;
 import model.Localization;
-import org.springframework.util.SocketUtils;
-import play.*;
 import play.api.db.Database;
 import play.libs.Json;
 import play.mvc.*;
@@ -15,10 +11,8 @@ import play.mvc.*;
 import repositories.LocalizationRepository;
 import repositories.TransportadoresRepository;
 import repositories.VehiculosRepository;
-import views.html.*;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class Application extends Controller {
 
@@ -168,5 +162,10 @@ public class Application extends Controller {
               return internalServerError("Vehicle - not updated");
           }
       }
+    }
+
+    public Result createService() throws SQLException {
+        JsonNode json = request().body().asJson();
+        return ok(json);
     }
 }
