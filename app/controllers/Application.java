@@ -4,11 +4,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import model.CarDetail;
 import model.Localization;
+import model.Service;
+import org.joda.time.DateTime;
 import play.api.db.Database;
 import play.libs.Json;
 import play.mvc.*;
 
 import repositories.LocalizationRepository;
+import repositories.ServiceRepository;
 import repositories.TransportadoresRepository;
 import repositories.VehiculosRepository;
 
@@ -165,7 +168,19 @@ public class Application extends Controller {
     }
 
     public Result createService() throws SQLException {
+        ServiceRepository serviceRepository = new ServiceRepository(db);
         JsonNode json = request().body().asJson();
-        return ok(json);
+        Service service = Json.fromJson(json, Service.class);
+        service.fecha_inicio = new DateTime();
+        System.out.println("--------- Create Service");
+        boolean success = serviceRepository.createService(service);
+        if (success){
+            System.out.println("Package added");
+            System.out.println("--------- Service created");
+            return ok(Json.toJson(service));
+        }
+        else {
+            return internalServerError("Impossible to create service");
+        }
     }
 }

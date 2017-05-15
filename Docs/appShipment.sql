@@ -105,7 +105,7 @@ CREATE TABLE dimensiones (
 );
 
 CREATE TABLE paquetes (
-  id_paquete NUMBER,
+  id_paquete NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
   id_servicio NUMERIC,
   id_usuario NUMERIC,
   id_transportador NUMERIC,
