@@ -43,6 +43,7 @@ public class LoginRepository {
 
         }
         catch (SQLException e){
+            e.printStackTrace();
             return false;
         }
         catch (Exception ex){
