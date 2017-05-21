@@ -4,6 +4,7 @@ import model.CarDetail;
 import model.Transportador;
 import play.api.db.Database;
 
+import javax.xml.crypto.dsig.TransformService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,7 +66,18 @@ public class PersonasDAO {
 
         return transportadores;
     }
-public List<Transportador> getAllTransportadoresByState(String estado) throws SQLException{
+
+    public Transportador getTransportadorById (int idTransporter) throws SQLException {
+        List<Transportador> trans = getAllTransportadores();
+        for (Transportador t: trans ) {
+            if (t.id == idTransporter){
+                return t;
+            }
+        }
+        return new Transportador();
+    }
+
+    public List<Transportador> getAllTransportadoresByState(String estado) throws SQLException{
         List<Transportador> transportadores = new ArrayList<>();
         PreparedStatement preparedStatement;
         String statement = "select p.ID_PERSONA, p.nombre, p.apellido, p.calificacion, t.ESTADO, l.LATITUD, l.LONGITUD,l.FECHA_ACTUALIZACION, v.MARCA,v.REFERENCIA, v.MODELO, v.PLACA, vt.NOMBRE as tipo \n" +

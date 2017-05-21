@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import model.CarDetail;
 import model.Localization;
 import model.Service;
+import model.User;
 import org.joda.time.DateTime;
 import play.api.db.Database;
 import play.libs.Json;
@@ -16,6 +17,7 @@ import repositories.TransportadoresRepository;
 import repositories.VehiculosRepository;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class Application extends Controller {
 
@@ -89,6 +91,20 @@ public class Application extends Controller {
             }
         }
     }
+
+
+    public Result getTransporterById (){
+        TransportadoresRepository transportadoresRepository = new TransportadoresRepository(db);
+        JsonNode json = request().body().asJson();
+        User user = Json.fromJson(json, User.class);
+        if( json == null){
+            return badRequest("invalid transporter id");
+        }
+        else {
+            return ok(Json.toJson(transportadoresRepository.getTransportadorById(user.id)));
+        }
+    }
+
 
     public Result getTransportersClosed (){
         TransportadoresRepository transportadoresRepository = new TransportadoresRepository(db);
@@ -172,15 +188,20 @@ public class Application extends Controller {
         JsonNode json = request().body().asJson();
         Service service = Json.fromJson(json, Service.class);
         service.fecha_inicio = new DateTime();
-        System.out.println("--------- Create Service");
         boolean success = serviceRepository.createService(service);
         if (success){
-            System.out.println("Package added");
-            System.out.println("--------- Service created");
             return ok(Json.toJson(service));
         }
         else {
             return internalServerError("Impossible to create service");
         }
+    }
+
+    public Result getActiveServices() throws SQLException  {
+        ServiceRepository serviceRepository = new ServiceRepository(db);
+        JsonNode json = request().body().asJson();
+        User user = Json.fromJson(json, User.class);
+        List<Service> services = serviceRepository.getActiveServicesById(user.id);
+        return ok(Json.toJson(services));
     }
 }

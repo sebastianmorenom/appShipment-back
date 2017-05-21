@@ -1,10 +1,12 @@
 package DAOs;
 
+import model.Addressee;
 import model.Service;
 import play.api.db.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PaquetesDAO {
@@ -46,4 +48,37 @@ public class PaquetesDAO {
         }
         return result;
     }
+
+    public Addressee selectAddressee(int idService, int idUser, int idTransporter){
+        Addressee addressee = new Addressee();
+
+        PreparedStatement preparedStatement;
+        String statement = "SELECT * FROM PAQUETES WHERE ID_SERVICIO = ? " +
+                "AND ID_USUARIO = ? AND ID_TRANSPORTADOR = ? ";
+
+        try {
+            preparedStatement = conn.prepareStatement(statement);
+            preparedStatement.setInt(1,idService);
+            preparedStatement.setInt(2,idUser);
+            preparedStatement.setInt(3,idTransporter);
+
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()){
+                addressee.name = result.getString("NOMBRE_DESTINATARIO");
+                addressee.idType = result.getString("TIPO_ID_DESTINATARIO");
+                addressee.id = result.getInt("NM_ID_DESTINATARIO");
+                addressee.numTel = result.getLong("TEL_DESTINATARIO");
+                addressee.contentDeclaration = result.getString("DECLARACION_CONTENIDO");
+                addressee.valueDeclaration = result.getLong("VALOR_DECLARADO");
+                addressee.dimension = result.getInt("ID_DIMENSIONES");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return addressee;
+    }
+
 }

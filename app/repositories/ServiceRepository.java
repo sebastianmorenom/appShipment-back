@@ -1,15 +1,21 @@
 package repositories;
 
 import DAOs.PaquetesDAO;
+import DAOs.PersonasDAO;
 import DAOs.ServiceDAO;
 import model.Service;
 import play.api.db.Database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceRepository {
     private Database db;
+    private final String service_created = "CR";
+    private final String service_accepted = "AC";
+    private final String service_finished  = "FI";
 
     public ServiceRepository(Database db){
         this.db = db;
@@ -17,15 +23,11 @@ public class ServiceRepository {
 
     public boolean createService(Service service){
         boolean success;
-        System.out.println("Adding service...");
         success = addService(service);
         System.out.println(success);
         if(success){
-            System.out.println("Service added\n Getting ID...");
             service.idService = getIdServiceAccepted(service.idUser, service.idTransporter);
-            System.out.println("Service id: "+ service.idService);
             if (service.idService != -1){
-                System.out.println("Adding package");
                 success = addPackage(service);
                 return success;
             }
@@ -40,7 +42,7 @@ public class ServiceRepository {
         Connection conn;
         try{
             conn = db.getConnection();
-            service.status = "AC";
+            service.status = service_accepted;
             ServiceDAO serviceDAO = new ServiceDAO(db, conn);
             int result = serviceDAO.insertService(service);
             if(result == -1){
@@ -79,5 +81,27 @@ public class ServiceRepository {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public List<Service> getActiveServicesById(int id){
+        List<Service> services = new ArrayList<>();
+        Connection conn;
+        try{
+            conn = db.getConnection();
+            ServiceDAO serviceDAO = new ServiceDAO(db, conn);
+            PaquetesDAO paquetesDAO = new PaquetesDAO(db, conn);
+            PersonasDAO personasDAO = new PersonasDAO(db,conn);
+            services = serviceDAO.getActiveServicesByUserId(id,service_accepted);
+            System.out.println(services);
+            if (services.size() > 0){
+                services.get(0).addressee = paquetesDAO.selectAddressee(services.get(0).idService,
+                    services.get(0).idUser, services.get(0).idTransporter );
+                services.get(0).transporter = personasDAO.getTransportadorById(services.get(0).idTransporter);
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return services;
     }
 }

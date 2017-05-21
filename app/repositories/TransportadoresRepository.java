@@ -36,6 +36,21 @@ public class TransportadoresRepository {
         return transportadores;
     }
 
+    public Transportador getTransportadorById(int id){
+
+        Transportador transportador = new Transportador();
+        Connection conn;
+        try {
+            conn = db.getConnection();
+            PersonasDAO personasDAO = new PersonasDAO(db,conn);
+            transportador = personasDAO.getTransportadorById(id);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return transportador;
+    }
+
     public List<Transportador> getTransportadoresByState(String estado){
 
         List<Transportador> transportadores = new ArrayList<>();
