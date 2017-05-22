@@ -46,8 +46,10 @@ public class ServiceRepository {
             ServiceDAO serviceDAO = new ServiceDAO(db, conn);
             int result = serviceDAO.insertService(service);
             if(result == -1){
+                conn.close();
                 return false;
             }
+            conn.close();
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -62,6 +64,7 @@ public class ServiceRepository {
             conn = db.getConnection();
             ServiceDAO serviceDAO = new ServiceDAO(db, conn);
             id = serviceDAO.selectIdServiceAccepted(idUser, idTransporter);
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,8 +78,10 @@ public class ServiceRepository {
             PaquetesDAO paquetesDAO = new PaquetesDAO(db,conn);
             int result = paquetesDAO.insertPackage(service);
             if(result == -1){
+                conn.close();
                 return false;
             }
+            conn.close();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -92,12 +97,12 @@ public class ServiceRepository {
             PaquetesDAO paquetesDAO = new PaquetesDAO(db, conn);
             PersonasDAO personasDAO = new PersonasDAO(db,conn);
             services = serviceDAO.getActiveServicesByUserId(id,service_accepted);
-            System.out.println(services);
             if (services.size() > 0){
                 services.get(0).addressee = paquetesDAO.selectAddressee(services.get(0).idService,
                     services.get(0).idUser, services.get(0).idTransporter );
                 services.get(0).transporter = personasDAO.getTransportadorById(services.get(0).idTransporter);
             }
+            conn.close();
         }
         catch (SQLException e){
             e.printStackTrace();

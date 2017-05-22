@@ -26,6 +26,7 @@ public class VehiculosRepository {
             conn = db.getConnection();
             VehiculosDAO vehiculosDAO = new VehiculosDAO(db,conn);
             tiposVehiculo = vehiculosDAO.getAllVehicleTypes();
+            conn.close();
         } catch (SQLException e){
             e.printStackTrace();
         }

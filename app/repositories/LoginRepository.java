@@ -40,7 +40,6 @@ public class LoginRepository {
                 user.id = result.getInt("ID_PERSONA");
             }
             conn.close();
-
         }
         catch (SQLException e){
             e.printStackTrace();

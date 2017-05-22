@@ -29,7 +29,7 @@ public class TransportadoresRepository {
             conn = db.getConnection();
             PersonasDAO personasDAO = new PersonasDAO(db,conn);
             transportadores = personasDAO.getAllTransportadores();
-
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -44,7 +44,7 @@ public class TransportadoresRepository {
             conn = db.getConnection();
             PersonasDAO personasDAO = new PersonasDAO(db,conn);
             transportador = personasDAO.getTransportadorById(id);
-
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -59,7 +59,7 @@ public class TransportadoresRepository {
             conn = db.getConnection();
             PersonasDAO personasDAO = new PersonasDAO(db,conn);
             transportadores = personasDAO.getAllTransportadoresByState(estado);
-
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,7 +75,7 @@ public class TransportadoresRepository {
             PersonasDAO personasDAO = new PersonasDAO(db,conn);
             transportadores = personasDAO.getAllTransportadoresByState(estado);
             transportadores = selectClosedTransporters(transportadores, lat, lng);
-
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -96,8 +96,10 @@ public class TransportadoresRepository {
                exito = vehiculosDAO.AssociateVehicleToTransporter(1002,id_vehicle);
             }
             else{
+                conn.close();
                 return false;
             }
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -112,7 +114,7 @@ public class TransportadoresRepository {
             conn = db.getConnection();
             PersonasDAO personasDAO = new PersonasDAO(db,conn);
             vehiculos = personasDAO.getVehiclesByTransporter(id_transporter);
-
+            conn.close();
         } catch(SQLException e){
             throw new SQLException(e.getMessage(), e);
         }
@@ -127,6 +129,7 @@ public class TransportadoresRepository {
         conn = db.getConnection();
         VehiculosDAO vehiculosDAO = new VehiculosDAO(db,conn);
         exito = vehiculosDAO.updateVehicleByTransporter(carDetail);
+        conn.close();
         return exito;
     }
 

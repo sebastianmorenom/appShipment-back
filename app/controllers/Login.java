@@ -32,7 +32,6 @@ public class Login extends Controller {
 
                 boolean validCredentials = loginRepository.verifyCredentials(user);
                 if( validCredentials ){
-                    String response = "Hello " + user.username + " - "+ user.password;
                     user.password="";
                     return ok(Json.toJson(user));
                 }
