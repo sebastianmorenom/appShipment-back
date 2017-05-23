@@ -74,7 +74,7 @@ public class ServiceDAO {
     public List<Service> getActiveServicesByUserId(int idTrans, String serviceStatus){
         List<Service> services = new ArrayList<>();
         PreparedStatement preparedStatement;
-        String statement = "SELECT * FROM SERVICIOS WHERE ID_TRANSPORTADOR = ? AND ESTADO = ?";
+        String statement = "SELECT * FROM SERVICIOS WHERE ID_USUARIO = ? AND ESTADO = ?";
 
         try {
             preparedStatement = conn.prepareStatement(statement);
