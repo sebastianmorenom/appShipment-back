@@ -71,34 +71,105 @@ public class ServiceDAO {
         return id;
     }
 
-    public List<Service> getActiveServicesByUserId(int idTrans, String serviceStatus){
+    public List<Service> getActiveServicesByUserId(int id, String userType, String serviceStatus){
         List<Service> services = new ArrayList<>();
+        String user_key;
+        if(userType == "user")
+            user_key="ID_USUARIO";
+        else
+            user_key="ID_TRANSPORTADOR";
         PreparedStatement preparedStatement;
-        String statement = "SELECT * FROM SERVICIOS WHERE ID_USUARIO = ? AND ESTADO = ?";
+        String statement = "SELECT * FROM SERVICIOS WHERE "+user_key+" = ? AND ESTADO = ?";
 
         try {
             preparedStatement = conn.prepareStatement(statement);
-            preparedStatement.setInt(1,idTrans);
+            preparedStatement.setInt(1,id);
             preparedStatement.setString(2,serviceStatus);
 
             ResultSet result = preparedStatement.executeQuery();
-            while (result.next()){
-                Service service = new Service();
-                service.idService = result.getInt("ID_SERVICIO");
-                service.idUser = result.getInt("ID_USUARIO");
-                service.idTransporter = result.getInt("ID_TRANSPORTADOR");
-                service.origen.lat = result.getDouble("ORIGEN_LAT");
-                service.origen.lng = result.getDouble("ORIGEN_LNG");
-                service.destino.lat = result.getDouble("DESTINO_LAT");
-                service.destino.lng = result.getDouble("DESTINO_LNG");
-                service.status = result.getString("ESTADO");
-                services.add(service);
-            }
+            services = listServices(result);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return services;
+    }
+
+    public List<Service> getActiveServicesById(int idService, int idUser, int idTrans){
+        List<Service> services = new ArrayList<>();
+        PreparedStatement preparedStatement;
+        String statement = "SELECT * FROM SERVICIOS WHERE ID_SERVICIO = ? AND " +
+                "ID_USUARIO = ? AND ID_TRANSPORTADOR = ?";
+
+        try {
+            preparedStatement = conn.prepareStatement(statement);
+            preparedStatement.setInt(1,idService);
+            preparedStatement.setInt(2,idUser);
+            preparedStatement.setInt(3,idTrans);
+
+            ResultSet result = preparedStatement.executeQuery();
+            services = listServices(result);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return services;
+    }
+
+    public boolean changeServiceState(int idService, int idUser, int idTrans, String state){
+        boolean exito=false;
+        PreparedStatement preparedStatement;
+        String statement = "UPDATE SERVICIOS SET ESTADO=? WHERE ID_SERVICIO = ? AND " +
+                "ID_USUARIO = ? AND ID_TRANSPORTADOR = ?";
+
+        try {
+            preparedStatement = conn.prepareStatement(statement);
+            preparedStatement.setString(1,state);
+            preparedStatement.setInt(2,idService);
+            preparedStatement.setInt(3,idUser);
+            preparedStatement.setInt(4,idTrans);
+
+            int result = preparedStatement.executeUpdate();
+            if(result ==1 ){
+                exito=true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return exito;
+    }
+
+    private List<Service> listServices (ResultSet result) throws SQLException{
+        List<Service> services = new ArrayList<>();
+        while (result.next()){
+            Service service = new Service();
+            service.idService = result.getInt("ID_SERVICIO");
+            service.idUser = result.getInt("ID_USUARIO");
+            service.idTransporter = result.getInt("ID_TRANSPORTADOR");
+            service.origen.lat = result.getDouble("ORIGEN_LAT");
+            service.origen.lng = result.getDouble("ORIGEN_LNG");
+            service.destino.lat = result.getDouble("DESTINO_LAT");
+            service.destino.lng = result.getDouble("DESTINO_LNG");
+            service.status = result.getString("ESTADO");
+            services.add(service);
+        }
+        orderServices(services);
+        return services;
+    }
+
+    private void orderServices (List<Service> services){
+        for (int i=0; i<services.size()-1; i++){
+            for (int j=i+1; i<services.size(); j++){
+                if (services.get(i).idService < services.get(j).idService) {
+                    Service aux_service = services.get(i);
+                    services.set(i, services.get(j));
+                    services.set(j, aux_service);
+                }
+            }
+        }
     }
 }

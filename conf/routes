@@ -18,7 +18,10 @@ POST    /transportadores/getById                   controllers.Application.getTr
 
 #Servicios
 POST    /services/create                            controllers.Application.createService()
-POST    /services/activeService                    controllers.Application.getActiveServices()
+POST    /services/servicebyId                       controllers.Application.getServiceById()
+POST    /services/activeService/user                controllers.Application.getActiveServicesUser()
+POST    /services/activeService/trans               controllers.Application.getActiveServicesTrans()
+POST    /services/changeServiceStatus               controllers.Application.changeServiceStatus()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                               controllers.Assets.at(path="/public", file)

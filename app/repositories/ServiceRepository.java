@@ -15,6 +15,7 @@ public class ServiceRepository {
     private Database db;
     private final String service_created = "CR";
     private final String service_accepted = "AC";
+    private final String service_started = "ST";
     private final String service_finished  = "FI";
 
     public ServiceRepository(Database db){
@@ -88,7 +89,7 @@ public class ServiceRepository {
         return true;
     }
 
-    public List<Service> getActiveServicesById(int id){
+    public List<Service> getActiveServicesByUserId(int id, String userType){
         List<Service> services = new ArrayList<>();
         Connection conn;
         try{
@@ -96,10 +97,10 @@ public class ServiceRepository {
             ServiceDAO serviceDAO = new ServiceDAO(db, conn);
             PaquetesDAO paquetesDAO = new PaquetesDAO(db, conn);
             PersonasDAO personasDAO = new PersonasDAO(db,conn);
-            services = serviceDAO.getActiveServicesByUserId(id,service_accepted);
+            services = serviceDAO.getActiveServicesByUserId(id, userType,service_accepted);
             if (services.size() > 0){
                 services.get(0).addressee = paquetesDAO.selectAddressee(services.get(0).idService,
-                    services.get(0).idUser, services.get(0).idTransporter );
+                        services.get(0).idUser, services.get(0).idTransporter );
                 services.get(0).transporter = personasDAO.getTransportadorById(services.get(0).idTransporter);
             }
             conn.close();
@@ -109,4 +110,42 @@ public class ServiceRepository {
         }
         return services;
     }
+
+    public List<Service> getActiveServicesById(int idService, int idUser, int idTrans){
+        List<Service> services = new ArrayList<>();
+        Connection conn;
+        try{
+            conn = db.getConnection();
+            ServiceDAO serviceDAO = new ServiceDAO(db, conn);
+            PaquetesDAO paquetesDAO = new PaquetesDAO(db, conn);
+            PersonasDAO personasDAO = new PersonasDAO(db,conn);
+            services = serviceDAO.getActiveServicesById(idService, idUser, idTrans);
+            if (services.size() > 0){
+                services.get(0).addressee = paquetesDAO.selectAddressee(idService,
+                        idUser, idTrans );
+                services.get(0).transporter = personasDAO.getTransportadorById(idTrans);
+            }
+            conn.close();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return services;
+    }
+
+    public boolean changeServiceStatus(int idService, int idUser, int idTrans, String state){
+        Connection conn;
+        boolean updated = false;
+        try{
+            conn = db.getConnection();
+            ServiceDAO serviceDAO = new ServiceDAO(db, conn);
+            updated = serviceDAO.changeServiceState(idService, idUser, idTrans, state);
+            conn.close();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return updated;
+    }
+
 }

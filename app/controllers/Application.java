@@ -2,10 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
-import model.CarDetail;
-import model.Localization;
-import model.Service;
-import model.User;
+import model.*;
 import org.joda.time.DateTime;
 import play.api.db.Database;
 import play.libs.Json;
@@ -197,11 +194,39 @@ public class Application extends Controller {
         }
     }
 
-    public Result getActiveServices() throws SQLException  {
-        ServiceRepository serviceRepository = new ServiceRepository(db);
+    public Result getActiveServicesUser() throws SQLException {
         JsonNode json = request().body().asJson();
         User user = Json.fromJson(json, User.class);
-        List<Service> services = serviceRepository.getActiveServicesById(user.id);
+        return getActiveServices("user", user);
+    }
+
+    public Result getActiveServicesTrans() throws SQLException {
+        JsonNode json = request().body().asJson();
+        User user = Json.fromJson(json, User.class);
+        return getActiveServices("trans", user);
+    }
+
+    public Result getActiveServices(String userType, User user) throws SQLException  {
+        ServiceRepository serviceRepository = new ServiceRepository(db);
+        List<Service> services = serviceRepository.getActiveServicesByUserId(user.id, userType);
         return ok(Json.toJson(services));
     }
+
+    public Result getServiceById() throws SQLException{
+        ServiceRepository serviceRepository = new ServiceRepository(db);
+        JsonNode json = request().body().asJson();
+        Service service =  Json.fromJson(json, Service.class);
+        List<Service> services = serviceRepository.getActiveServicesById(service.idService, service.idUser, service.idTransporter);
+        return ok(Json.toJson(services));
+    }
+
+    public Result changeServiceStatus() throws SQLException{
+        ServiceRepository serviceRepository = new ServiceRepository(db);
+        JsonNode json = request().body().asJson();
+        ServiceUpdater serviceUpdater =  Json.fromJson(json, ServiceUpdater.class);
+        boolean updated = serviceRepository.changeServiceStatus(serviceUpdater.idService, serviceUpdater.idUser,
+                serviceUpdater.idTrans, serviceUpdater.state);
+        return ok(Json.toJson(updated));
+    }
+
 }
