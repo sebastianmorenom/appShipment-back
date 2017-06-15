@@ -79,12 +79,13 @@ public class ServiceDAO {
         else
             user_key="ID_TRANSPORTADOR";
         PreparedStatement preparedStatement;
-        String statement = "SELECT * FROM SERVICIOS WHERE "+user_key+" = ? AND ESTADO = ?";
+        String statement = "SELECT * FROM SERVICIOS WHERE "+user_key+" = ? AND (ESTADO = ? OR ESTADO = ?)";
 
         try {
             preparedStatement = conn.prepareStatement(statement);
             preparedStatement.setInt(1,id);
             preparedStatement.setString(2,serviceStatus);
+            preparedStatement.setString(3,"ST");
 
             ResultSet result = preparedStatement.executeQuery();
             services = listServices(result);
